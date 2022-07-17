@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
-import { useLeafletContext } from "@react-leaflet/core";
 
 import L from "leaflet";
 
@@ -11,9 +10,7 @@ const mapTextureProps = {
   maxZoom: 8,
 };
 
-const meterPerPixel = 500;
-
-const wholeMapWidth = mapTextureProps.width * meterPerPixel;
+const metersPerPoint = 500;
 
 type PxPoint = [number, number];
 
@@ -26,6 +23,7 @@ function App() {
         maxZoom={mapTextureProps.maxZoom}
         crs={L.CRS.Simple}
         className="map"
+        id="map"
       >
         <MapTiles />
         <MapScale />
@@ -44,6 +42,8 @@ function MapTiles() {
   );
 
   map.setMaxBounds(bounds);
+
+  // leaflet default scale
 
   // const scale = L.control.scale({ imperial: false });
   // map.addControl(scale);
@@ -67,27 +67,25 @@ function MapTiles() {
   );
 }
 
-function countScreenToMapPxRatio() {
-  return window.innerWidth / wholeMapWidth;
-}
+// TODO: static version of map scale, add map zoom handling
+
+const scaleBarWidth = 100;
 
 function MapScale() {
-  const [meters, setMeters] = useState<number>();
-  const [ratio, setRatio] = useState<number>(countScreenToMapPxRatio());
+  const { map, project } = useMapProjection();
 
-  // window.addEventListener("resize", () => {
-  //   setRatio(countScreenToMapPxRatio());
-  // });
+  const scaleBarDistance = pointsHorizontalDistance(
+    project(map.containerPointToLatLng([0, 0])),
+    project(map.containerPointToLatLng([scaleBarWidth, 0]))
+  );
 
-  const width = 100;
+  const pointsPerPixel = scaleBarDistance / scaleBarWidth;
 
-  useEffect(() => {
-    setMeters(width / ratio);
-  }, [width, ratio]);
+  const meters = pointsPerPixel * metersPerPoint;
 
   return (
-    <div className="scale" id="scale" style={{ width: width }}>
-      {meters} m
+    <div className="scale" id="scale" style={{ width: scaleBarWidth }}>
+      {meters * scaleBarWidth} m
     </div>
   );
 }
@@ -110,6 +108,15 @@ function useMapProjection() {
       return [point.x, point.y];
     },
   };
+}
+
+// calculates distance between points coordinates on X axis
+
+function pointsHorizontalDistance(point1: PxPoint, point2: PxPoint) {
+  const dx = point1[0] - point2[0],
+    dy = point1[1] - point2[1];
+
+  return Math.sqrt(dx * dx + dy * dy);
 }
 
 export default App;
