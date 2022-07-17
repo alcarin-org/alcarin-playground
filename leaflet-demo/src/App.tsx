@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import { useLeafletContext } from "@react-leaflet/core";
 
-import L, { control } from "leaflet";
+import L from "leaflet";
 
 const mapTextureProps = {
   width: 8000,
   height: 8000,
   maxZoom: 8,
 };
+
+const meterPerPixel = 500;
+
+const wholeMapWidth = mapTextureProps.width * meterPerPixel;
 
 type PxPoint = [number, number];
 
@@ -20,8 +25,10 @@ function App() {
         zoom={2}
         maxZoom={mapTextureProps.maxZoom}
         crs={L.CRS.Simple}
+        className="map"
       >
         <MapTiles />
+        <MapScale />
       </MapContainer>
     </div>
   );
@@ -35,10 +42,11 @@ function MapTiles() {
     unproject([0, mapTextureProps.height]),
     unproject([mapTextureProps.width, 0])
   );
-  console.log("render");
 
   map.setMaxBounds(bounds);
-  map.addControl(control.scale());
+
+  // const scale = L.control.scale({ imperial: false });
+  // map.addControl(scale);
 
   // center the map
   map.setView(
@@ -59,6 +67,31 @@ function MapTiles() {
   );
 }
 
+function countScreenToMapPxRatio() {
+  return window.innerWidth / wholeMapWidth;
+}
+
+function MapScale() {
+  const [meters, setMeters] = useState<number>();
+  const [ratio, setRatio] = useState<number>(countScreenToMapPxRatio());
+
+  // window.addEventListener("resize", () => {
+  //   setRatio(countScreenToMapPxRatio());
+  // });
+
+  const width = 100;
+
+  useEffect(() => {
+    setMeters(width / ratio);
+  }, [width, ratio]);
+
+  return (
+    <div className="scale" id="scale" style={{ width: width }}>
+      {meters} m
+    </div>
+  );
+}
+
 // pixel map project hook
 
 const zoomFactor = Math.ceil(
@@ -71,7 +104,7 @@ function useMapProjection() {
 
   return {
     map,
-    unproject: (point: PxPoint) => map.unproject(point, zoomFactor),
+    unproject: (point: PxPoint): L.LatLng => map.unproject(point, zoomFactor),
     project: (latlng: L.LatLng): PxPoint => {
       const point = map.project(latlng, zoomFactor);
       return [point.x, point.y];
