@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  useMap,
+  useMapEvent,
+  ZoomControl,
+} from "react-leaflet";
 
 import L from "leaflet";
 
@@ -25,6 +31,7 @@ function App() {
         className="map"
         id="map"
       >
+        <ZoomControl />
         <MapTiles />
         <MapScale />
       </MapContainer>
@@ -42,11 +49,6 @@ function MapTiles() {
   );
 
   map.setMaxBounds(bounds);
-
-  // leaflet default scale
-
-  // const scale = L.control.scale({ imperial: false });
-  // map.addControl(scale);
 
   // center the map
   map.setView(
@@ -66,22 +68,17 @@ function MapTiles() {
     </>
   );
 }
-
-// TODO: static version of map scale, add map zoom handling
-
 const scaleBarWidth = 100;
 
 function MapScale() {
-  const { map, project } = useMapProjection();
+  const { map } = useMapProjection();
+  const [zoom, setZoom] = useState(2);
 
-  const scaleBarDistance = pointsHorizontalDistance(
-    project(map.containerPointToLatLng([0, 0])),
-    project(map.containerPointToLatLng([scaleBarWidth, 0]))
-  );
+  useMapEvent("zoom", (e) => {
+    setZoom(map.getZoom());
+  });
 
-  const pointsPerPixel = scaleBarDistance / scaleBarWidth;
-
-  const meters = pointsPerPixel * metersPerPoint;
+  const { meters } = useRecalculateScale(zoom);
 
   return (
     <div className="scale" id="scale" style={{ width: scaleBarWidth }}>
@@ -108,6 +105,26 @@ function useMapProjection() {
       return [point.x, point.y];
     },
   };
+}
+
+// recalculates map scale
+
+function useRecalculateScale(zoom: number) {
+  const { map, project } = useMapProjection();
+  const [meters, setMeters] = useState(0);
+
+  useEffect(() => {
+    const scaleBarDistance = pointsHorizontalDistance(
+      project(map.containerPointToLatLng([0, 0])),
+      project(map.containerPointToLatLng([scaleBarWidth, 0]))
+    );
+
+    const pointsPerPixel = scaleBarDistance / scaleBarWidth;
+
+    setMeters(pointsPerPixel * metersPerPoint);
+  }, [map, project, zoom]);
+
+  return { meters };
 }
 
 // calculates distance between points coordinates on X axis
