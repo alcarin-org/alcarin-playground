@@ -31,7 +31,6 @@ function App() {
         className="map"
         id="map"
       >
-        <ZoomControl />
         <MapTiles />
         <MapScale />
       </MapContainer>
@@ -80,9 +79,11 @@ function MapScale() {
 
   const { meters } = useRecalculateScale(zoom);
 
+  const scaleValue = convertMetersToKilometers(meters * scaleBarWidth);
+
   return (
     <div className="scale" id="scale" style={{ width: scaleBarWidth }}>
-      {meters * scaleBarWidth} m
+      {scaleValue}
     </div>
   );
 }
@@ -134,6 +135,12 @@ function pointsHorizontalDistance(point1: PxPoint, point2: PxPoint) {
     dy = point1[1] - point2[1];
 
   return Math.sqrt(dx * dx + dy * dy);
+}
+
+// converts meters to kilometers
+
+function convertMetersToKilometers(meters: number) {
+  return meters > 1000 ? `${meters / 1000} km` : `${meters} m`;
 }
 
 export default App;
