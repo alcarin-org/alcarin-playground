@@ -140,22 +140,29 @@ function pointsHorizontalDistance(point1: PxPoint, point2: PxPoint) {
 // converts meters to kilometers if given value is bigger than 1000m
 
 function useConvertUnits(meters: number, initialScaleBarWidth: number) {
-  const [isValueInKm, setIsValueInKm] = useState(false);
+  const shouldConvertToKm = meters >= 1000;
+
   const [scaleBarWidth, setScaleBarWidth] = useState(initialScaleBarWidth);
   const [convertedValue, setConvertedValue] = useState(meters);
 
   useEffect(() => {
-    const myVal = meters >= 1000 ? meters / 1000 : meters;
-    const ceiledValue = myVal % 1 !== 0 ? Math.ceil(myVal) : myVal;
-    const ceilingFactor = myVal % 1 !== 0 ? Math.ceil(myVal) / myVal : 1;
-    console.log("ceiling factor", ceilingFactor);
+    const convertedMeters = shouldConvertToKm ? meters / 1000 : meters;
+    const isConvertedValueFloat = convertedMeters % 1 !== 0;
+
+    const ceiledValue = isConvertedValueFloat
+      ? Math.ceil(convertedMeters)
+      : convertedMeters;
+
+    const ceilingFactor = isConvertedValueFloat
+      ? Math.ceil(convertedMeters) / convertedMeters
+      : 1;
+
     setConvertedValue(ceiledValue);
-    setIsValueInKm(meters >= 1000);
     setScaleBarWidth(initialScaleBarWidth * ceilingFactor);
-  }, [meters, initialScaleBarWidth]);
+  }, [meters, initialScaleBarWidth, shouldConvertToKm]);
 
   return {
-    convertedValue: isValueInKm
+    convertedValue: shouldConvertToKm
       ? `${convertedValue} km`
       : `${convertedValue} m`,
     scaleBarWidth,
