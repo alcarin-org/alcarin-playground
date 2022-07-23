@@ -5,7 +5,7 @@
 
 .scale {
   position: absolute;
-  bottom: 5px;
+  bottom: 30px;
   left: 5px;
   z-index: 1000;
   height: 25px;

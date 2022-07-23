@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import {
-  MapContainer,
-  TileLayer,
-  useMap,
-  useMapEvent,
-  ZoomControl,
-} from "react-leaflet";
+import { MapContainer, TileLayer, useMap, useMapEvent } from "react-leaflet";
 
 import L from "leaflet";
 
@@ -67,19 +61,25 @@ function MapTiles() {
     </>
   );
 }
-const scaleBarWidth = 100;
+const initialScaleBarWidth = 100;
 
 function MapScale() {
   const { map } = useMapProjection();
   const [zoom, setZoom] = useState(2);
+  const [scaleBarWidth, setScaleBarWidth] = useState(initialScaleBarWidth);
 
   useMapEvent("zoom", (e) => {
     setZoom(map.getZoom());
   });
 
-  const { meters } = useRecalculateScale(zoom);
+  const { meters } = useRecalculateScale(zoom, initialScaleBarWidth);
 
-  const scaleValue = convertMetersToKilometers(meters * scaleBarWidth);
+  const { convertedValue: scaleValue, scaleBarWidth: adjustedScaleBarWidth } =
+    useConvertUnits(meters * initialScaleBarWidth, initialScaleBarWidth);
+
+  useEffect(() => {
+    setScaleBarWidth(adjustedScaleBarWidth);
+  }, [adjustedScaleBarWidth]);
 
   return (
     <div className="scale" id="scale" style={{ width: scaleBarWidth }}>
@@ -110,7 +110,7 @@ function useMapProjection() {
 
 // recalculates map scale
 
-function useRecalculateScale(zoom: number) {
+function useRecalculateScale(zoom: number, scaleBarWidth: number) {
   const { map, project } = useMapProjection();
   const [meters, setMeters] = useState(0);
 
@@ -123,7 +123,7 @@ function useRecalculateScale(zoom: number) {
     const pointsPerPixel = scaleBarDistance / scaleBarWidth;
 
     setMeters(pointsPerPixel * metersPerPoint);
-  }, [map, project, zoom]);
+  }, [map, project, zoom, scaleBarWidth]);
 
   return { meters };
 }
@@ -137,10 +137,29 @@ function pointsHorizontalDistance(point1: PxPoint, point2: PxPoint) {
   return Math.sqrt(dx * dx + dy * dy);
 }
 
-// converts meters to kilometers
+// converts meters to kilometers if given value is bigger than 1000m
 
-function convertMetersToKilometers(meters: number) {
-  return meters > 1000 ? `${meters / 1000} km` : `${meters} m`;
+function useConvertUnits(meters: number, initialScaleBarWidth: number) {
+  const [isValueInKm, setIsValueInKm] = useState(false);
+  const [scaleBarWidth, setScaleBarWidth] = useState(initialScaleBarWidth);
+  const [convertedValue, setConvertedValue] = useState(meters);
+
+  useEffect(() => {
+    const myVal = meters >= 1000 ? meters / 1000 : meters;
+    const ceiledValue = myVal % 1 !== 0 ? Math.ceil(myVal) : myVal;
+    const ceilingFactor = myVal % 1 !== 0 ? Math.ceil(myVal) / myVal : 1;
+    console.log("ceiling factor", ceilingFactor);
+    setConvertedValue(ceiledValue);
+    setIsValueInKm(meters >= 1000);
+    setScaleBarWidth(initialScaleBarWidth * ceilingFactor);
+  }, [meters, initialScaleBarWidth]);
+
+  return {
+    convertedValue: isValueInKm
+      ? `${convertedValue} km`
+      : `${convertedValue} m`,
+    scaleBarWidth,
+  };
 }
 
 export default App;
