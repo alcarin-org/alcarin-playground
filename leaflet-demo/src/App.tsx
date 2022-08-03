@@ -20,7 +20,7 @@ function App() {
       <MapContainer
         minZoom={2}
         zoom={2}
-        // maxZoom={mapTextureProps.maxZoom}
+        maxZoom={mapTextureProps.maxZoom}
         crs={L.CRS.Simple}
         className="map"
         id="map"
