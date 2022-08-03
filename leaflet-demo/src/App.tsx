@@ -20,7 +20,7 @@ function App() {
       <MapContainer
         minZoom={2}
         zoom={2}
-        maxZoom={mapTextureProps.maxZoom}
+        // maxZoom={mapTextureProps.maxZoom}
         crs={L.CRS.Simple}
         className="map"
         id="map"
@@ -147,14 +147,14 @@ function useConvertUnits(meters: number, initialScaleBarWidth: number) {
 
   useEffect(() => {
     const convertedMeters = shouldConvertToKm ? meters / 1000 : meters;
-    const isConvertedValueFloat = convertedMeters % 1 !== 0;
+    const isConvertedValueFloat = convertedMeters % 5 !== 0;
 
     const ceiledValue = isConvertedValueFloat
-      ? Math.ceil(convertedMeters)
+      ? Math.ceil(convertedMeters / 5) * 5
       : convertedMeters;
 
     const ceilingFactor = isConvertedValueFloat
-      ? Math.ceil(convertedMeters) / convertedMeters
+      ? (Math.ceil(convertedMeters / 5) * 5) / convertedMeters
       : 1;
 
     setConvertedValue(ceiledValue);
