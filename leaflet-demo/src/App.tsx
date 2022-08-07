@@ -10,7 +10,7 @@ const mapTextureProps = {
   maxZoom: 8,
 };
 
-const metersPerPoint = 500;
+const metersPerMapPixel = 500;
 
 type PxPoint = [number, number];
 
@@ -122,7 +122,7 @@ function useRecalculateScale(zoom: number, scaleBarWidth: number) {
 
     const pointsPerPixel = scaleBarDistance / scaleBarWidth;
 
-    setMeters(pointsPerPixel * metersPerPoint);
+    setMeters(pointsPerPixel * metersPerMapPixel);
   }, [map, project, zoom, scaleBarWidth]);
 
   return { meters };
