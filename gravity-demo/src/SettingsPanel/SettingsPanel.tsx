@@ -46,12 +46,12 @@ export const SettingsPanel = () => {
 
   createEffect(() => {
     // TO INVESTIGATE - weird behaviour, in order to trigger this effect each time activeRing changes
-    // I needed to ad this console.log
-    console.log("active ring", activeRing());
+    // I needed to use activeRing signal outside the setter
+    const activeRingId = activeRing();
     setRings((state) => {
       const updatedList = state.map((ring) => ({
         ...ring,
-        active: activeRing() === ring.id,
+        active: activeRingId === ring.id,
       }));
       return updatedList;
     });
