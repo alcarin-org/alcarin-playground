@@ -5,3 +5,8 @@ export const StyledPanelWrapper = styled("div")({
   border: "1px solid black",
   borderRadius: "5px",
 });
+
+export const StyledRingsList = styled("ul")({
+  listStyleType: "none",
+  padding: 0,
+});
