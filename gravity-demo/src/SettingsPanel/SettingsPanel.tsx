@@ -18,6 +18,7 @@ export const SettingsPanel = () => {
       {
         id: ringId,
         radius: state.length ? state[state.length - 1].radius + 20 : 20,
+        mass: state.length ? state[state.length - 1].mass + 15 : 15,
         active: true,
       },
     ]);
@@ -28,6 +29,17 @@ export const SettingsPanel = () => {
       const updatedList = state.map((ring) =>
         ring.id === ringId
           ? { ...ring, radius: Number(e.currentTarget.value) }
+          : ring
+      );
+      return updatedList;
+    });
+  };
+
+  const handleChangeMass = (e: ChangeEvent, ringId: string) => {
+    setRings((state) => {
+      const updatedList = state.map((ring) =>
+        ring.id === ringId
+          ? { ...ring, mass: Number(e.currentTarget.value) }
           : ring
       );
       return updatedList;
@@ -46,7 +58,7 @@ export const SettingsPanel = () => {
 
   createEffect(() => {
     // TO INVESTIGATE - weird behaviour, in order to trigger this effect each time activeRing changes
-    // I needed to use activeRing signal outside the setter
+    // I needed to use activeRing signal outside the store setter
     const activeRingId = activeRing();
     setRings((state) => {
       const updatedList = state.map((ring) => ({
@@ -68,6 +80,7 @@ export const SettingsPanel = () => {
               index={index()}
               onHover={handleSetActiveRing}
               onChangeRadius={handleChangeRadius}
+              onChangeMass={handleChangeMass}
               onRemoveRing={handleRemoveRing}
             />
           )}

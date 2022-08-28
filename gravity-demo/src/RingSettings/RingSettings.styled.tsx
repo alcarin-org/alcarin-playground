@@ -8,7 +8,10 @@ type StyledLabelProps = {
   active: boolean;
 };
 
-export const StyledLabel = styled("label")<StyledLabelProps>(({ active }) => ({
+export const StyledLabel = styled("label")({
   marginRight: "16px",
+});
+
+export const StyledTitle = styled("p")<StyledLabelProps>(({ active }) => ({
   fontWeight: active ? "bold" : "normal",
 }));
