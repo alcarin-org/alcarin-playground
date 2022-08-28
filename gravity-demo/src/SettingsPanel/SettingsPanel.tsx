@@ -1,8 +1,14 @@
 import { For } from "solid-js";
-import { RingSettings } from "../RingSettings/RingSettings";
-import { getRings } from "./getRings";
 
-import { StyledPanelWrapper, StyledRingsList } from "./SettingsPanel.styled";
+import { StyledButton } from "../components/StyledButton";
+import { RingSettings } from "../RingSettings/RingSettings";
+
+import { getRings } from "./getRings";
+import {
+  StyledButtonPanel,
+  StyledPanelWrapper,
+  StyledRingsList,
+} from "./SettingsPanel.styled";
 
 export const SettingsPanel = () => {
   const {
@@ -16,7 +22,9 @@ export const SettingsPanel = () => {
 
   return (
     <StyledPanelWrapper>
-      <button onClick={handleAddRing}>Add gravity ring</button>
+      <StyledButtonPanel>
+        <StyledButton onClick={handleAddRing}>Add gravity ring</StyledButton>
+      </StyledButtonPanel>
       <StyledRingsList>
         <For each={rings}>
           {(ring, index) => (

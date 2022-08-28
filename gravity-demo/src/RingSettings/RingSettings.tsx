@@ -1,6 +1,10 @@
+import { StyledButton } from "../components/StyledButton";
+import { StyledInput } from "../components/StyledInput";
 import { ChangeEvent } from "../types";
 
 import {
+  StyledHeader,
+  StyledInputWrapper,
   StyledLabel,
   StyledRingWrapper,
   StyledTitle,
@@ -34,23 +38,34 @@ export const RingSettings = ({
   const massId = `mass-${ring.id}`;
 
   return (
-    <StyledRingWrapper onMouseOver={(e) => onHover(e, ring.id)}>
-      <StyledTitle active={ring.active}> Ring {index + 1}</StyledTitle>
-      <StyledLabel for={radiusId}>Radius</StyledLabel>
-      <input
-        type="number"
-        id={radiusId}
-        onChange={(e) => onChangeRadius(e, ring.id)}
-        value={ring.radius}
-      />
-      <StyledLabel for={massId}>Mass</StyledLabel>
-      <input
-        type="number"
-        id={massId}
-        onChange={(e) => onChangeMass(e, ring.id)}
-        value={ring.mass}
-      />
-      <button onClick={(e) => onRemoveRing(e, ring.id)}>Remove ring</button>
+    <StyledRingWrapper
+      onMouseOver={(e) => onHover(e, ring.id)}
+      active={ring.active}
+    >
+      <StyledHeader>
+        <StyledTitle> Ring {index + 1}</StyledTitle>
+        <StyledButton onClick={(e) => onRemoveRing(e, ring.id)}>
+          Remove
+        </StyledButton>
+      </StyledHeader>
+      <StyledInputWrapper>
+        <StyledLabel for={radiusId}>Radius</StyledLabel>
+        <StyledInput
+          type="number"
+          id={radiusId}
+          onChange={(e) => onChangeRadius(e, ring.id)}
+          value={ring.radius}
+        />
+      </StyledInputWrapper>
+      <StyledInputWrapper>
+        <StyledLabel for={massId}>Mass</StyledLabel>
+        <StyledInput
+          type="number"
+          id={massId}
+          onChange={(e) => onChangeMass(e, ring.id)}
+          value={ring.mass}
+        />
+      </StyledInputWrapper>
     </StyledRingWrapper>
   );
 };
