@@ -1,7 +1,7 @@
 import { For } from "solid-js";
 
 import { StyledButton } from "../components/StyledButton";
-import { RingSettings } from "../RingSettings/RingSettings";
+import { RingSettings } from "./RingSettings/RingSettings";
 
 import { getRings } from "./getRings";
 import {

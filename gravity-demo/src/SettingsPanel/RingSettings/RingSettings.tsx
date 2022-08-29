@@ -1,6 +1,6 @@
-import { StyledButton } from "../components/StyledButton";
-import { StyledInput } from "../components/StyledInput";
-import { ChangeEvent } from "../types";
+import { StyledButton } from "../../components/StyledButton";
+import { StyledInput } from "../../components/StyledInput";
+import { ChangeEvent } from "../../types";
 
 import {
   StyledHeader,

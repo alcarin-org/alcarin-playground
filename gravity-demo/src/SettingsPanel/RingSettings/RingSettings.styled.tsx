@@ -6,7 +6,8 @@ type StyledRingWrapperProps = {
 export const StyledRingWrapper = styled("li")<StyledRingWrapperProps>(
   ({ active }) => ({
     padding: "16px",
-    backgroundColor: active ? "#f5f5f5" : "#fff",
+    backgroundColor: active ? "#90C8AC" : "#fff",
+    cursor: "pointer",
   })
 );
 

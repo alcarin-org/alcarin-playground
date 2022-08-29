@@ -2,7 +2,7 @@ import { nanoid } from "nanoid";
 import { createEffect, createSignal } from "solid-js";
 import { createStore } from "solid-js/store";
 
-import { Ring } from "../RingSettings/RingSettings";
+import { Ring } from "./RingSettings/RingSettings";
 import { ChangeEvent } from "../types";
 
 export const getRings = () => {
