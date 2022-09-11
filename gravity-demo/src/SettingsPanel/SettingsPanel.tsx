@@ -1,4 +1,4 @@
-import { For } from "solid-js";
+import { createEffect, For } from "solid-js";
 
 import { StyledButton } from "../components/StyledButton";
 import { RingSettings } from "./RingSettings/RingSettings";

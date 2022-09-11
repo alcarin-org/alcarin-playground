@@ -6,8 +6,23 @@ import { Ring } from "./RingSettings/RingSettings";
 import { ChangeEvent } from "../types";
 
 export const getRings = () => {
-  const [rings, setRings] = createStore<Ring[]>([]);
-  const [activeRing, setActiveRing] = createSignal("");
+  const [rings, setRings] = createStore<Ring[]>([
+    {
+      id: "13126562",
+      radius: 20,
+      mass: 300,
+      active: true,
+    },
+    {
+      id: "131265762",
+      radius: 50,
+      mass: 350,
+      active: false,
+    },
+  ]);
+  const [activeRing, setActiveRing] = createSignal(
+    rings.find((ring) => ring.active)?.id || ""
+  );
 
   const handleAddRing = () => {
     const ringId = nanoid();
