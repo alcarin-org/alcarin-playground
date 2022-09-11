@@ -2,5 +2,13 @@
 import { render } from "solid-js/web";
 
 import App from "./App";
+import { RingsContextProvider } from "./context/RingsContext";
 
-render(() => <App />, document.getElementById("root") as HTMLElement);
+render(
+  () => (
+    <RingsContextProvider>
+      <App />
+    </RingsContextProvider>
+  ),
+  document.getElementById("root") as HTMLElement
+);

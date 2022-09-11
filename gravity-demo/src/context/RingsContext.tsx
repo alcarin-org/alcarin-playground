@@ -1,35 +1,39 @@
 import { nanoid } from "nanoid";
-import { createContext, createEffect, JSX } from "solid-js";
+import { createContext, createEffect, JSX, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
 import { Ring } from "../SettingsPanel/RingSettings/RingSettings";
 import { ChangeEvent } from "../types";
 
-type RingsContextType = [
-  {
+type RingsContextModel = {
+  state: {
     rings: Ring[];
     activeRing: string;
-  },
-  {
+  };
+  actions: {
     addRing: () => void;
+    setActiveRing: (ringId: string) => void;
     changeRadius: (e: ChangeEvent, ringId: string) => void;
     changeMass: (e: ChangeEvent, ringId: string) => void;
     removeRing: (e: MouseEvent, ringId: string) => void;
-  }
-];
+  };
+};
 
-function notImplemented(): never {
-  throw new Error("Missing RingsContextProvider");
-}
+// function notImplemented(): never {
+//   throw new Error("Missing RingsContextProvider");
+// }
 
-const RingsContext = createContext<RingsContextType>([
-  { rings: [], activeRing: "" },
-  {
-    addRing: notImplemented,
-    changeRadius: notImplemented,
-    changeMass: notImplemented,
-    removeRing: notImplemented,
-  },
-]);
+// const RingsContext = createContext<RingsContextType>([
+//   { rings: [], activeRing: "" },
+//   {
+//     addRing: notImplemented,
+//     setActiveRing: notImplemented,
+//     changeRadius: notImplemented,
+//     changeMass: notImplemented,
+//     removeRing: notImplemented,
+//   },
+// ]);
+
+const RingsContext = createContext<RingsContextModel>();
 
 type RingsContextProviderProps = {
   children: JSX.Element;
@@ -91,6 +95,10 @@ export function RingsContextProvider({ children }: RingsContextProviderProps) {
     });
   };
 
+  const handleSetActiveRing = (ringId: string) => {
+    setState((state) => ({ ...state, activeRing: ringId }));
+  };
+
   createEffect(() => {
     // TO INVESTIGATE - weird behaviour, in order to trigger this effect each time activeRing changes
     // I needed to use activeRing signal outside the store setter
@@ -103,10 +111,11 @@ export function RingsContextProvider({ children }: RingsContextProviderProps) {
     });
   });
 
-  const ringsInterface: RingsContextType = [
+  const ringsInterface: RingsContextModel = {
     state,
-    {
+    actions: {
       addRing: handleAddRing,
+      setActiveRing: (ringId: string) => handleSetActiveRing(ringId),
       changeRadius: (e: ChangeEvent, ringId: string) =>
         handleChangeRadius(e, ringId),
       changeMass: (e: ChangeEvent, ringId: string) =>
@@ -114,11 +123,15 @@ export function RingsContextProvider({ children }: RingsContextProviderProps) {
       removeRing: (e: MouseEvent, ringId: string) =>
         handleRemoveRing(e, ringId),
     },
-  ];
+  };
 
   return (
     <RingsContext.Provider value={ringsInterface}>
       {children}
     </RingsContext.Provider>
   );
+}
+
+export function useRings(): RingsContextModel | undefined {
+  return useContext(RingsContext);
 }

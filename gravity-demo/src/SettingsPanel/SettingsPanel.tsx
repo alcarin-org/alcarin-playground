@@ -1,9 +1,10 @@
-import { createEffect, For } from "solid-js";
+import { For } from "solid-js";
 
 import { StyledButton } from "../components/StyledButton";
 import { RingSettings } from "./RingSettings/RingSettings";
 
-import { getRings } from "./getRings";
+import { useRings } from "../context/RingsContext";
+
 import {
   StyledButtonPanel,
   StyledPanelWrapper,
@@ -11,19 +12,17 @@ import {
 } from "./SettingsPanel.styled";
 
 export const SettingsPanel = () => {
+  const ringsContext = useRings();
+
   const {
-    rings,
-    handleAddRing,
-    setActiveRing,
-    handleChangeMass,
-    handleChangeRadius,
-    handleRemoveRing,
-  } = getRings();
+    state: { rings },
+    actions: { addRing, setActiveRing, changeRadius, changeMass, removeRing },
+  } = ringsContext;
 
   return (
     <StyledPanelWrapper>
       <StyledButtonPanel>
-        <StyledButton onClick={handleAddRing}>Add gravity ring</StyledButton>
+        <StyledButton onClick={addRing}>Add gravity ring</StyledButton>
       </StyledButtonPanel>
       <StyledRingsList>
         <For each={rings}>
@@ -32,9 +31,9 @@ export const SettingsPanel = () => {
               ring={ring}
               index={index()}
               onHover={(_, ringId: string) => setActiveRing(ringId)}
-              onChangeRadius={handleChangeRadius}
-              onChangeMass={handleChangeMass}
-              onRemoveRing={handleRemoveRing}
+              onChangeRadius={changeRadius}
+              onChangeMass={changeMass}
+              onRemoveRing={removeRing}
             />
           )}
         </For>
