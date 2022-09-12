@@ -1,11 +1,13 @@
 import { createEffect, For } from "solid-js";
-import { getRings } from "../../SettingsPanel/getRings";
+import { useRings } from "../../context/useRings";
 
 import { Ring } from "./Ring/Ring";
 import { StyledRingsGraphWrapper } from "./RingsGraph.styled";
 
 export const RingsGraph = () => {
-  const { rings } = getRings();
+  const {
+    state: { rings },
+  } = useRings();
 
   createEffect(() =>
     // eslint-disable-next-line no-console
@@ -19,6 +21,7 @@ export const RingsGraph = () => {
           <For each={rings}>
             {(ring) => <Ring radius={ring.radius} isActive={ring.active} />}
           </For>
+          <circle cx="50%" cy="50%" r="3" />
         </g>
       </StyledRingsGraphWrapper>
     </>
