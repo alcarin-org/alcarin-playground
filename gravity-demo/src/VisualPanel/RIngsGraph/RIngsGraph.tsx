@@ -9,14 +9,17 @@ export const RingsGraph = () => {
     state: { rings },
   } = useRings();
 
-  createEffect(() =>
+  const handleSvgClick = (e: MouseEvent) => {
     // eslint-disable-next-line no-console
-    console.log(rings, "rings")
-  );
+    console.log(e);
+  };
 
   return (
     <>
-      <StyledRingsGraphWrapper viewBox="0 0 300 300">
+      <StyledRingsGraphWrapper
+        viewBox="0 0 300 300"
+        onClick={(e) => handleSvgClick(e)}
+      >
         <g>
           <For each={rings}>
             {(ring) => <Ring radius={ring.radius} isActive={ring.active} />}
