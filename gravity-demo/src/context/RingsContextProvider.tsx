@@ -20,10 +20,14 @@ export function RingsContextProvider(props: RingsContextProviderProps) {
   const handleAddRing = () => {
     const ringId = nanoid();
     setState((state) => {
+      const updatedRingsElements = state.rings.map((ring) => ({
+        ...ring,
+        active: false,
+      }));
       return {
         ...state,
         rings: [
-          ...state.rings,
+          ...updatedRingsElements,
           {
             id: ringId,
             radius: state.rings.length
@@ -70,18 +74,12 @@ export function RingsContextProvider(props: RingsContextProviderProps) {
   };
 
   const handleSetActiveRing = (ringId: string) => {
-    setState((state) => ({ ...state, activeRing: ringId }));
+    const updatedList = state.rings.map((ring) => ({
+      ...ring,
+      active: ringId === ring.id,
+    }));
+    setState((state) => ({ ...state, rings: updatedList, activeRing: ringId }));
   };
-
-  createEffect(() => {
-    setState((state) => {
-      const updatedList = state.rings.map((ring) => ({
-        ...ring,
-        active: state.activeRing === ring.id,
-      }));
-      return { ...state, rings: updatedList };
-    });
-  });
 
   const ringsInterface: RingsContextModel = {
     state,

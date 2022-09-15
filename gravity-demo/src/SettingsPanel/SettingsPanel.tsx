@@ -14,7 +14,7 @@ export const SettingsPanel = () => {
   const ringsContext = useRings();
 
   const {
-    state: { rings },
+    state,
     actions: { addRing, setActiveRing, changeRadius, changeMass, removeRing },
   } = ringsContext;
 
@@ -24,7 +24,7 @@ export const SettingsPanel = () => {
         <StyledButton onClick={addRing}>Add gravity ring</StyledButton>
       </StyledButtonPanel>
       <StyledRingsList>
-        <For each={rings}>
+        <For each={state.rings}>
           {(ring, index) => (
             <RingSettings
               ring={ring}

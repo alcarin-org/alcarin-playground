@@ -5,9 +5,7 @@ import { Ring } from "./Ring/Ring";
 import { StyledRingsGraphWrapper } from "./RingsGraph.styled";
 
 export const RingsGraph = () => {
-  const {
-    state: { rings },
-  } = useRings();
+  const { state } = useRings();
 
   const handleSvgClick = (e: MouseEvent) => {
     // eslint-disable-next-line no-console
@@ -21,7 +19,7 @@ export const RingsGraph = () => {
         onClick={(e) => handleSvgClick(e)}
       >
         <g>
-          <For each={rings}>
+          <For each={state.rings}>
             {(ring) => <Ring radius={ring.radius} isActive={ring.active} />}
           </For>
           <circle cx="50%" cy="50%" r="3" />
