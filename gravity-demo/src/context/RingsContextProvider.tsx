@@ -74,6 +74,7 @@ export function RingsContextProvider(props: RingsContextProviderProps) {
   };
 
   const handleSetActiveRing = (ringId: string) => {
+    if (ringId === state.activeRing) return;
     const updatedList = state.rings.map((ring) => ({
       ...ring,
       active: ringId === ring.id,
