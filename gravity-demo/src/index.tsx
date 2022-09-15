@@ -6,7 +6,10 @@ import { RingsContextProvider } from "./context/RingsContextProvider";
 
 render(
   () => (
-    <RingsContextProvider rings={[]} activeRing="">
+    <RingsContextProvider
+      rings={[{ id: "123", active: true, radius: 20, mass: 300 }]}
+      activeRing="123"
+    >
       <App />
     </RingsContextProvider>
   ),

@@ -11,35 +11,33 @@ type RingsContextProviderProps = {
   activeRing: string;
 };
 
-export function RingsContextProvider({
-  children,
-  rings,
-  activeRing,
-}: RingsContextProviderProps) {
+export function RingsContextProvider(props: RingsContextProviderProps) {
   const [state, setState] = createStore<{ rings: Ring[]; activeRing: string }>({
-    rings: rings || [],
-    activeRing: activeRing || "",
+    rings: props.rings || [],
+    activeRing: props.activeRing || "",
   });
 
   const handleAddRing = () => {
     const ringId = nanoid();
-    setState((state) => ({
-      ...state,
-      rings: [
-        ...state.rings,
-        {
-          id: ringId,
-          radius: state.rings.length
-            ? state.rings[state.rings.length - 1].radius + 20
-            : 20,
-          mass: state.rings.length
-            ? state.rings[state.rings.length - 1].mass + 15
-            : 15,
-          active: true,
-        },
-      ],
-      activeRing: ringId,
-    }));
+    setState((state) => {
+      return {
+        ...state,
+        rings: [
+          ...state.rings,
+          {
+            id: ringId,
+            radius: state.rings.length
+              ? state.rings[state.rings.length - 1].radius + 20
+              : 20,
+            mass: state.rings.length
+              ? state.rings[state.rings.length - 1].mass + 15
+              : 15,
+            active: true,
+          },
+        ],
+        activeRing: ringId,
+      };
+    });
   };
 
   const handleChangeRadius = (e: ChangeEvent, ringId: string) => {
@@ -101,7 +99,7 @@ export function RingsContextProvider({
 
   return (
     <RingsContext.Provider value={ringsInterface}>
-      {children}
+      {props.children}
     </RingsContext.Provider>
   );
 }

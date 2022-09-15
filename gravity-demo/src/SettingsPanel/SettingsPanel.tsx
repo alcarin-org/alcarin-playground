@@ -1,7 +1,6 @@
 import { createEffect, For } from "solid-js";
 
 import { StyledButton } from "../components/StyledButton";
-import { RingsContextModel } from "../context/RingsContext";
 import { useRings } from "../context/useRings";
 
 import { RingSettings } from "./RingSettings/RingSettings";
@@ -17,7 +16,7 @@ export const SettingsPanel = () => {
   const {
     state: { rings },
     actions: { addRing, setActiveRing, changeRadius, changeMass, removeRing },
-  } = ringsContext as RingsContextModel;
+  } = ringsContext;
 
   return (
     <StyledPanelWrapper>
