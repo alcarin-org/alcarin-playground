@@ -3,6 +3,7 @@ import { styled } from "solid-styled-components";
 export const StyledRingsGraphWrapper = styled("div")({
   maxWidth: "500px",
   margin: "16px",
+  height: "500px",
 });
 
 export const StyledRingsGraph = styled("svg")({

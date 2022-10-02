@@ -1,4 +1,4 @@
-import { createEffect, For, JSX } from "solid-js";
+import { createEffect, For, JSX, Show } from "solid-js";
 import { createStore } from "solid-js/store";
 import { useRings } from "../../context/useRings";
 
@@ -26,19 +26,20 @@ export const RingsGraph = () => {
     setPointerPosition({ x, y });
   };
 
-  createEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log(pointerPosition.x, pointerPosition.y);
-  });
-
   return (
     <StyledRingsGraphWrapper onClick={handleSvgClick}>
-      <StyledRingsGraph viewBox="0 0 300 300">
+      <StyledRingsGraph>
         <g>
           <For each={state.rings}>
             {(ring) => <Ring radius={ring.radius} isActive={ring.active} />}
           </For>
           <circle cx="50%" cy="50%" r="3" />
+          <circle
+            cx={pointerPosition.x ? pointerPosition.x : ""}
+            cy={pointerPosition.y ? pointerPosition.y : ""}
+            r="4"
+            fill="#ff0000"
+          />
         </g>
       </StyledRingsGraph>
     </StyledRingsGraphWrapper>
