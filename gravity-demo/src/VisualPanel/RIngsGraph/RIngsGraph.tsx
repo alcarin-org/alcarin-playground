@@ -1,6 +1,6 @@
 import { For, JSX } from "solid-js";
 import { createStore } from "solid-js/store";
-import { useRings } from "../../context/useRings";
+import { useRings } from "../../context/RingsContext/useRings";
 
 import { Ring } from "./Ring/Ring";
 import { StyledRingsGraph, StyledRingsGraphWrapper } from "./RingsGraph.styled";

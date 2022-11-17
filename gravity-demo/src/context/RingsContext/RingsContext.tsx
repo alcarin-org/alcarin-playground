@@ -1,6 +1,8 @@
 import { createContext } from "solid-js";
-import { Ring } from "../SettingsPanel/RingSettings/RingSettings";
-import { ChangeEvent } from "../types";
+import { Ring } from "../../SettingsPanel/RingSettings/RingSettings";
+import { ChangeEvent } from "../../types";
+
+import { notImplemented } from "../common/notImplemented";
 
 export type RingsContextModel = {
   state: {
@@ -15,10 +17,6 @@ export type RingsContextModel = {
     removeRing: (e: MouseEvent, ringId: string) => void;
   };
 };
-
-function notImplemented(): never {
-  throw new Error("Missing RingsContextProvider");
-}
 
 export const RingsContext = createContext<RingsContextModel>({
   state: { rings: [], activeRing: "" },

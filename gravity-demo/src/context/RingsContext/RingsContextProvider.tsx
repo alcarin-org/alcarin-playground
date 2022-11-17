@@ -1,8 +1,8 @@
 import { nanoid } from "nanoid";
 import { createEffect, JSX } from "solid-js";
 import { createStore } from "solid-js/store";
-import { Ring } from "../SettingsPanel/RingSettings/RingSettings";
-import { ChangeEvent } from "../types";
+import { Ring } from "../../SettingsPanel/RingSettings/RingSettings";
+import { ChangeEvent } from "../../types";
 import { RingsContext, RingsContextModel } from "./RingsContext";
 
 type RingsContextProviderProps = {

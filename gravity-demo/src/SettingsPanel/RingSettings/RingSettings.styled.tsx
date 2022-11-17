@@ -11,19 +11,9 @@ export const StyledRingWrapper = styled("li")<StyledRingWrapperProps>(
   })
 );
 
-export const StyledLabel = styled("label")({
-  marginRight: "16px",
-  fontWeight: 400,
-});
-
 export const StyledTitle = styled("p")({
   margin: "4px 0",
   fontSize: "16px",
-});
-
-export const StyledInputWrapper = styled("div")({
-  display: "grid",
-  gridTemplateColumns: "30% 1fr",
 });
 
 export const StyledHeader = styled("div")({

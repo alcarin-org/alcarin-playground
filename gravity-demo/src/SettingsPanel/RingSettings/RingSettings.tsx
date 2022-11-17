@@ -1,11 +1,13 @@
 import { StyledButton } from "../../components/StyledButton";
-import { StyledInput } from "../../components/StyledInput";
+import {
+  StyledInput,
+  StyledInputWrapper,
+  StyledLabel,
+} from "../../components/StyledInput";
 import { ChangeEvent } from "../../types";
 
 import {
   StyledHeader,
-  StyledInputWrapper,
-  StyledLabel,
   StyledRingWrapper,
   StyledTitle,
 } from "./RingSettings.styled";

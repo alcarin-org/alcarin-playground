@@ -1,7 +1,7 @@
 import { createEffect, For } from "solid-js";
 
 import { StyledButton } from "../components/StyledButton";
-import { useRings } from "../context/useRings";
+import { useRings } from "../context/RingsContext/useRings";
 
 import { RingSettings } from "./RingSettings/RingSettings";
 import {
@@ -21,11 +21,13 @@ export const SettingsPanel = () => {
   return (
     <StyledPanelWrapper>
       <StyledButtonPanel>
+        <GraphSettings />
         <StyledButton onClick={addRing}>Add gravity ring</StyledButton>
       </StyledButtonPanel>
       <StyledRingsList>
         <For each={state.rings}>
           {(ring, index) => (
+            // TODO move methods to component (use ringsContext inside)
             <RingSettings
               ring={ring}
               index={index()}

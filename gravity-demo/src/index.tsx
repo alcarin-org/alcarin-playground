@@ -2,7 +2,7 @@
 import { render } from "solid-js/web";
 
 import App from "./App";
-import { RingsContextProvider } from "./context/RingsContextProvider";
+import { RingsContextProvider } from "./context/RingsContext/RingsContextProvider";
 
 render(
   () => (
