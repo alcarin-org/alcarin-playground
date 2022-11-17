@@ -1,4 +1,4 @@
-import { createEffect, For, JSX, Show } from "solid-js";
+import { For, JSX } from "solid-js";
 import { createStore } from "solid-js/store";
 import { useRings } from "../../context/useRings";
 
@@ -6,16 +6,16 @@ import { Ring } from "./Ring/Ring";
 import { StyledRingsGraph, StyledRingsGraphWrapper } from "./RingsGraph.styled";
 
 type PointerPosition = {
-  x: number | null;
-  y: number | null;
+  x: number | string | null;
+  y: number | string | null;
 };
 
 export const RingsGraph = () => {
   const { state } = useRings();
 
   const [pointerPosition, setPointerPosition] = createStore<PointerPosition>({
-    x: null,
-    y: null,
+    x: "50%",
+    y: "50%",
   });
 
   const handleSvgClick: JSX.EventHandler<HTMLDivElement, MouseEvent> = (e) => {
