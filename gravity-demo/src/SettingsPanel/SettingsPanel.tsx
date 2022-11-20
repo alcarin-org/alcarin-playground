@@ -1,7 +1,8 @@
 import { createEffect, For } from "solid-js";
 
 import { StyledButton } from "../components/StyledButton";
-import { useRings } from "../context/RingsContext/useRings";
+import { useRingsContext } from "../context/RingsContext/useRingsContext";
+import { GraphSettings } from "./GraphSettings/GraphSettings";
 
 import { RingSettings } from "./RingSettings/RingSettings";
 import {
@@ -11,7 +12,7 @@ import {
 } from "./SettingsPanel.styled";
 
 export const SettingsPanel = () => {
-  const ringsContext = useRings();
+  const ringsContext = useRingsContext();
 
   const {
     state,
@@ -20,8 +21,8 @@ export const SettingsPanel = () => {
 
   return (
     <StyledPanelWrapper>
+      <GraphSettings />
       <StyledButtonPanel>
-        <GraphSettings />
         <StyledButton onClick={addRing}>Add gravity ring</StyledButton>
       </StyledButtonPanel>
       <StyledRingsList>

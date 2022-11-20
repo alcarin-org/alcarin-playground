@@ -1,6 +1,7 @@
 import { For, JSX } from "solid-js";
 import { createStore } from "solid-js/store";
-import { useRings } from "../../context/RingsContext/useRings";
+import { useGraphContext } from "../../context/GraphContext/useGraphContext";
+import { useRingsContext } from "../../context/RingsContext/useRingsContext";
 
 import { Ring } from "./Ring/Ring";
 import { StyledRingsGraph, StyledRingsGraphWrapper } from "./RingsGraph.styled";
@@ -11,7 +12,8 @@ type PointerPosition = {
 };
 
 export const RingsGraph = () => {
-  const { state } = useRings();
+  const { state: ringsState } = useRingsContext();
+  const { state: graphState } = useGraphContext();
 
   const [pointerPosition, setPointerPosition] = createStore<PointerPosition>({
     x: "50%",
@@ -27,10 +29,14 @@ export const RingsGraph = () => {
   };
 
   return (
-    <StyledRingsGraphWrapper onClick={handleSvgClick}>
+    <StyledRingsGraphWrapper
+      onClick={handleSvgClick}
+      width={graphState.width}
+      height={graphState.height}
+    >
       <StyledRingsGraph>
         <g>
-          <For each={state.rings}>
+          <For each={ringsState.rings}>
             {(ring) => <Ring radius={ring.radius} isActive={ring.active} />}
           </For>
           <circle cx="50%" cy="50%" r="3" />

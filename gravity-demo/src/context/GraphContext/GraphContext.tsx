@@ -3,14 +3,12 @@ import { ChangeEvent } from "../../types";
 import { notImplemented } from "../common/notImplemented";
 
 type GraphDimensions = {
-  width: number | null;
-  height: number | null;
+  width: number;
+  height: number;
 };
 
 export type GraphContextModel = {
-  state: {
-    graph: GraphDimensions;
-  };
+  state: GraphDimensions;
   actions: {
     setGraphWidth: (e: ChangeEvent) => void;
     setGraphHeight: (e: ChangeEvent) => void;
@@ -18,12 +16,12 @@ export type GraphContextModel = {
 };
 
 const graphDimensionsDefaults = {
-  width: null,
-  height: null,
+  width: 0,
+  height: 0,
 };
 
 export const GraphContext = createContext<GraphContextModel>({
-  state: { graph: graphDimensionsDefaults },
+  state: graphDimensionsDefaults,
   actions: {
     setGraphHeight: notImplemented,
     setGraphWidth: notImplemented,

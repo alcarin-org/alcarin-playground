@@ -1,38 +1,46 @@
-import { StyledButton } from "../../components/StyledButton";
 import {
   StyledInput,
   StyledInputWrapper,
   StyledLabel,
 } from "../../components/StyledInput";
+import { useGraphContext } from "../../context/GraphContext/useGraphContext";
 
-import { StyledGraphSettings } from "./GraphSettings.styled";
+import {
+  StyledGraphSettings,
+  StyledInputsWrapper,
+} from "./GraphSettings.styled";
 
 export const GraphSettings = () => {
-  const handleSetBoardDimensions = () => {};
+  const graphContext = useGraphContext();
+
+  const {
+    state,
+    actions: { setGraphHeight, setGraphWidth },
+  } = graphContext;
 
   return (
     <StyledGraphSettings>
-      <StyledInputWrapper>
-        <StyledLabel for="graphWidth">Radius</StyledLabel>
-        <StyledInput
-          type="number"
-          id="graphWidth"
-          onChange={(e) => onChangeGraphWidth(e, ring.id)}
-          value={}
-        />
-      </StyledInputWrapper>
-      <StyledInputWrapper>
-        <StyledLabel for="graphHeight">Mass</StyledLabel>
-        <StyledInput
-          type="number"
-          id="graphHeight"
-          onChange={(e) => onChangeMass(e, ring.id)}
-          value={}
-        />
-      </StyledInputWrapper>
-      <StyledButton onClick={handleSetBoardDimensions}>
-        Set board dimensions
-      </StyledButton>
+      <p>Board dimensions:</p>
+      <StyledInputsWrapper>
+        <StyledInputWrapper>
+          <StyledLabel for="graphWidth">Width</StyledLabel>
+          <StyledInput
+            type="number"
+            id="graphWidth"
+            onChange={setGraphWidth}
+            value={state.width}
+          />
+        </StyledInputWrapper>
+        <StyledInputWrapper>
+          <StyledLabel for="graphHeight">Height</StyledLabel>
+          <StyledInput
+            type="number"
+            id="graphHeight"
+            onChange={setGraphHeight}
+            value={state.height}
+          />
+        </StyledInputWrapper>
+      </StyledInputsWrapper>
     </StyledGraphSettings>
   );
 };
